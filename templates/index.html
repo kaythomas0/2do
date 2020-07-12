@@ -3,38 +3,44 @@
   <div class="columns">
     <div class="column">
       {{ range $Todo  := .TodoList }}
-        <form action="/done/{{$Todo.ID}}" method="POST">
-          <div class="input-group">
-            <input type="hidden" name="id" value="{{ $Todo.ID }}" />
-            <span class="input-group-addon">
-              {{if $Todo.Done}}
-                <del>{{ $Todo.Title }}</del>
-              {{else}}
-                {{ $Todo.Title }}
-              {{end}}
-            </span>
-            {{if not $Todo.Done}}
-              <button class="btn btn-action" type="submit">
-                <i class="icon icon-check"></i>
-              </button>
+      <form action="/done/{{$Todo.ID}}" method="POST">
+        <div class="input-group mb-10">
+          <input type="hidden" name="id" value="{{ $Todo.ID }}" />
+          {{if not $Todo.Done}}
+          <button class="btn btn-action" type="submit">
+            <i class="icon icon-check"></i>
+          </button>
+          {{else}}
+          <a class="btn btn-action btn-red" href="/clear/{{$Todo.ID}}">
+            <i class="icon icon-cross"></i>
+          </a>
+          {{end}}
+          <span class="ml-10"></span>
+          <span class="input-group-addon">
+            {{if $Todo.Done}}
+            <del>{{ $Todo.Title }}</del>
             {{else}}
-              <a class="btn btn-action" href="/clear/{{$Todo.ID}}">
-                <i class="icon icon-cross"></i>
-              </a>
+            {{ $Todo.Title }}
             {{end}}
-          </div>
-        </form>
+          </span>
+        </div>
+      </form>
       {{end}}
     </div>
   </div>
+
+  <header class="navbar">
+    <p class="navbar-brand">Add Item:</p>
+  </header>
 
   <div class="columns">
     <div class="column">
       <form action="/add" method="POST">
         <div class="form-group input-group">
           <label class="form-label" for="input-title"></label>
-          <input class="form-input" id="input-title" type="text" name="title" placeholder="Title" autofocus="autofocus" />
-          <button class="btn btn-primary" type="submit">↵</button>
+          <input class="form-input" id="input-title" type="text" name="title" placeholder="[Add Item]"
+            autofocus="autofocus" />
+          <!-- <button class="btn btn-primary" type="submit">↵</button> -->
         </div>
       </form>
     </div>
