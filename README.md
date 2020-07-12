@@ -1,3 +1,5 @@
+# Fork of [prologic/todo](https://github.com/prologic/todo) aimed at being more mobile friendly.
+
 # todo
 [![Build Status](https://cloud.drone.io/api/badges/prologic/todo/status.svg)](https://cloud.drone.io/prologic/todo)
 [![GoDoc](https://godoc.org/github.com/prologic/todo?status.svg)](https://godoc.org/github.com/prologic/todo)
