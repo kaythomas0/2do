@@ -390,11 +390,11 @@ html {
   -webkit-tap-highlight-color: transparent;
 }
 body {
-  background: #fff;
-  color: #50596c;
+  background: #282a36;
+  color: #f8f8f2;
   font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-  font-size: 1.4rem;
-  overflow-x: hidden;
+  font-size: 1.5rem;
+  overflow-x: scroll;
   text-rendering: optimizeLegibility;
 }
 a {
@@ -443,6 +443,7 @@ h6 {
   font-size: 1.6rem;
 }
 p {
+  color: #ff79c6;
   line-height: 2.4rem;
   margin: 0 0 1rem;
 }
@@ -588,13 +589,13 @@ abbr[title] {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  background: #fff;
-  border: .1rem solid #5764c6;
+  background: #44475a;
+  border: .1rem solid #282a36;
   border-radius: .2rem;
-  color: #5764c6;
+  color: #50fa7b;
   cursor: pointer;
   display: inline-block;
-  font-size: 1.4rem;
+  font-size: 2rem;
   height: 3.2rem;
   line-height: 2rem;
   outline: none;
@@ -609,22 +610,25 @@ abbr[title] {
   vertical-align: middle;
   white-space: nowrap;
 }
+.btn-red {
+  color: #ff5555;
+}
 .btn:focus {
-  background: #fbfbfe;
+  background: #ff79c6;
   box-shadow: 0 0 0 .2rem rgba(87, 100, 198, .15);
   text-decoration: none;
 }
 .btn:hover {
-  background: #5764c6;
-  border-color: #4c59c2;
-  color: #fff;
+  background: #ff79c6;
+  border-color: #282a36;
+  color: #6272a4;
   text-decoration: none;
 }
 .btn:active,
 .btn.active {
-  background: #4c59c2;
-  border-color: #3e4cb6;
-  color: #fff;
+  background: #ff79c6;
+  border-color: #282a36;
+  color: #6272a4;
   text-decoration: none;
 }
 .btn[disabled],
@@ -635,36 +639,36 @@ abbr[title] {
   pointer-events: none;
 }
 .btn.btn-primary {
-  background: #5764c6;
-  border-color: #4c59c2;
-  color: #fff;
+  background: #ff79c6;
+  border-color: #282a36;
+  color: #6272a4;
 }
 .btn.btn-primary:focus,
 .btn.btn-primary:hover {
-  background: #4452c0;
-  border-color: #3e4cb6;
-  color: #fff;
+  background: #ff79c6;
+  border-color: #282a36;
+  color: #6272a4;
 }
 .btn.btn-primary:active,
 .btn.btn-primary.active {
-  background: #3f4eba;
-  border-color: #3b49af;
-  color: #fff;
+  background: #ff79c6;
+  border-color: #282a36;
+  color: #6272a4;
 }
 .btn.btn-primary.loading::after {
-  border-bottom-color: #fff;
-  border-left-color: #fff;
+  border-bottom-color: #282a36;
+  border-left-color: #282a36;
 }
 .btn.btn-link {
   background: transparent;
   border-color: transparent;
-  color: #5764c6;
+  color: #6272a4;
 }
 .btn.btn-link:focus,
 .btn.btn-link:hover,
 .btn.btn-link:active,
 .btn.btn-link.active {
-  color: #3b49af;
+  color: #6272a4;
 }
 .btn.btn-sm {
   font-size: 1.2rem;
@@ -681,6 +685,7 @@ abbr[title] {
   width: 100%;
 }
 .btn.btn-action {
+  flex-shrink: 0;
   padding-left: 0;
   padding-right: 0;
   width: 3.2rem;
@@ -769,13 +774,13 @@ abbr[title] {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  background: #fff;
+  background: #44475a;
   background-image: none;
-  border: .1rem solid #c4c9d3;
+  border: .1rem solid #282a36;
   border-radius: .2rem;
-  color: #50596c;
+  color: #f8f8f2;
   display: block;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   height: 3.2rem;
   line-height: 2rem;
   max-width: 100%;
@@ -786,7 +791,7 @@ abbr[title] {
   width: 100%;
 }
 .form-input:focus {
-  border-color: #5764c6;
+  border-color: #282a36;
   box-shadow: 0 0 0 .2rem rgba(87, 100, 198, .15);
 }
 .form-input::-webkit-input-placeholder {
@@ -1072,8 +1077,8 @@ textarea.form-input {
   display: -webkit-flex;
 }
 .input-group .input-group-addon {
-  background: #f8f9fa;
-  border: .1rem solid #c4c9d3;
+  background: #44475a;
+  border: .1rem solid #282a36;
   border-radius: .2rem;
   line-height: 2rem;
   padding: .5rem .8rem;
@@ -1689,7 +1694,6 @@ code {
 }
 .navbar {
   -webkit-align-items: stretch;
-  align-items: stretch;
   display: flex;
   display: -ms-flexbox;
   display: -webkit-flex;
@@ -1700,6 +1704,8 @@ code {
   flex-wrap: wrap;
   -webkit-justify-content: space-between;
   justify-content: space-between;
+  align-items: center;
+  justify-content: center;
 }
 .navbar .navbar-section {
   -webkit-align-items: center;
@@ -1729,7 +1735,7 @@ code {
   -ms-flex-align: center;
 }
 .navbar .navbar-brand {
-  font-size: 1.6rem;
+  font-size: 3rem;
   font-weight: 500;
   text-decoration: none;
 }
@@ -2812,6 +2818,9 @@ code {
   float: none;
   margin-left: auto;
   margin-right: auto;
+}
+.mt-20 {
+  margin-top: 2rem;
 }
 .mt-10 {
   margin-top: 1rem;
