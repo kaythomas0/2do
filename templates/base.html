@@ -3,30 +3,31 @@
 <html lang="en">
 
 <head>
-  <link rel="stylesheet" href="/css/spectre-icons.css">
-  <link rel="stylesheet" href="/css/spectre.css">
-  {{ template "stylesheets" . }}
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  {{ template "css" . }}
-  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
-  <link rel="manifest" href="/icons/site.webmanifest">
-  <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#5bbad5">
-  <link rel="shortcut icon" href="/icons/favicon.ico">
-  <meta name="msapplication-TileColor" content="#da532c">
-  <meta name="msapplication-config" content="/icons/browserconfig.xml">
-  <meta name="theme-color" content="#ffffff">
-  <title>TODO</title>
+    <link rel="stylesheet" href="/css/spectre-icons.css">
+    <link rel="stylesheet" href="/css/spectre.css">
+    <link rel="stylesheet" href="/css/color-themes/dracula.css">
+    {{ template "stylesheets" . }}
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {{ template "css" . }}
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    <link rel="manifest" href="/icons/site.webmanifest">
+    <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/icons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <title>TODO</title>
 </head>
 
 <body>
-  <section class="container grid-960 mt-20">
-    <header class="navbar">
-      <p class="navbar-brand">TODO:</p>
-    </header>
-    {{template "content" .}}
-  </section>
+    <section class="container grid-960 mt-20">
+        <header class="navbar">
+            <p class="navbar-brand">TODO:</p>
+        </header>
+        {{template "content" .}}
+    </section>
 </body>
 {{ template "scripts" . }}
 

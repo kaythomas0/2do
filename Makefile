@@ -3,7 +3,7 @@
 all: dev
 
 dev: build
-	./todo
+	./2do
 
 build: clean
 	go get ./...
@@ -13,4 +13,4 @@ test:
 	go test ./...
 
 clean:
-	rm -rf todo
+	rm -rf 2do
