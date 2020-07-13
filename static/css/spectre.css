@@ -639,9 +639,9 @@ abbr[title] {
   pointer-events: none;
 }
 .btn.btn-primary {
-  background: #ff79c6;
+  background: #44475a;
   border-color: #282a36;
-  color: #6272a4;
+  color: #ff79c6;
 }
 .btn.btn-primary:focus,
 .btn.btn-primary:hover {
