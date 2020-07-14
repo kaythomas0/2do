@@ -5,7 +5,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
+	"io"
 	"net/http"
+	"os"
 	"sort"
 	"strconv"
 
@@ -45,6 +47,52 @@ func (c *counters) IncBy(name string, n int64) {
 
 func (c *counters) DecBy(name string, n int64) {
 	metrics.GetOrRegisterCounter(name, c.r).Dec(n)
+}
+
+func selectColorTheme() {
+	colorTheme := os.Getenv("COLOR_THEME")
+
+	if colorTheme == "" {
+		colorTheme = "dracula"
+	} else if colorTheme == "custom" {
+		pageBackgroundColor := os.Getenv("COLOR_PAGE_BACKGROUND")
+		inputBackgroundColor := os.Getenv("COLOR_INPUT_BACKGROUND")
+		foregroundColor := os.Getenv("COLOR_FOREGROUND")
+		checkMarkColor := os.Getenv("COLOR_CHECK_MARK")
+		xMarkColor := os.Getenv("COLOR_X_MARK")
+		labelColor := os.Getenv("COLOR_LABEL")
+
+		customThemeFile, err := os.OpenFile("./static/css/color-theme.css", os.O_RDWR|os.O_CREATE, 0666)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer customThemeFile.Close()
+
+		_, err = customThemeFile.WriteString(":root {\n\t--page-background: " + pageBackgroundColor + ";" +
+			"\n\t--input-background: " + inputBackgroundColor + ";" +
+			"\n\t--foreground: " + foregroundColor + ";" +
+			"\n\t--check: " + checkMarkColor + ";" +
+			"\n\t--x: " + xMarkColor + ";" +
+			"\n\t--label: " + labelColor + ";" +
+			"\n}")
+	} else {
+		from, err := os.Open("./static/color-themes/" + colorTheme + ".css")
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer from.Close()
+
+		to, err := os.OpenFile("./static/css/color-theme.css", os.O_RDWR|os.O_CREATE, 0666)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer to.Close()
+
+		_, err = io.Copy(to, from)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
 }
 
 type server struct {
@@ -332,6 +380,8 @@ func newServer(bind string) *server {
 		counters: newCounters(),
 		stats:    stats.New(),
 	}
+
+	selectColorTheme()
 
 	// Templates
 	box := rice.MustFindBox("templates")

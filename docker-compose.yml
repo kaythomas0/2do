@@ -1,10 +1,16 @@
-version: '2'
+version: '3'
+
 services:
-  todo:
+  2do:
     build: .
-    image: todo:local
-    #image: prologic/todo:latest
+    container_name: 2do
+    environment:
+      COLOR_THEME: ayu
     ports:
       - 8000:8000
-    container_name: todo
+    volumes:
+      - db:/2do/db
     restart: always
+
+volumes:
+  db:

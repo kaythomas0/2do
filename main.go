@@ -22,7 +22,7 @@ func main() {
 	flag.Parse()
 
 	var err error
-	db, err = bitcask.Open(dbpath)
+	db, err = bitcask.Open("/2do/db")
 	if err != nil {
 		log.Fatal(err)
 	}
