@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"os"
 	"sort"
 	"strconv"
 
@@ -18,6 +19,16 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/thoas/stats"
 	"github.com/unrolled/logger"
+)
+
+const (
+	// DefaultMaxItems is the default maximum number of items allowed in the todo list.
+	DefaultMaxItems = 100
+
+	// DefaultMaxTitleLength is the default maximum valid length of a todo item's title.
+	// Todo items that exceed this length are stripped. This is to prevent
+	// abuse primarily.
+	DefaultMaxTitleLength = 100
 )
 
 type counters struct {
@@ -48,9 +59,11 @@ func (c *counters) DecBy(name string, n int64) {
 }
 
 type server struct {
-	bind      string
-	templates *templates
-	router    *httprouter.Router
+	bind           string
+	templates      *templates
+	router         *httprouter.Router
+	maxItems       int
+	maxTitleLength int
 
 	// Logger
 	logger *logger.Logger
@@ -136,7 +149,18 @@ func (s *server) AddHandler() httprouter.Handle {
 			nextID = binary.BigEndian.Uint64(rawNextID)
 		}
 
-		todo := newTodo(r.FormValue("title"))
+		if db.Len() > s.maxItems {
+			log.Error("error adding item - max number of items reached")
+			http.Redirect(w, r, "/", http.StatusFound)
+			return
+		}
+
+		titleString := r.FormValue("title")
+		if len(titleString) > s.maxTitleLength {
+			titleString = titleString[:s.maxTitleLength]
+		}
+
+		todo := newTodo(titleString)
 		todo.ID = nextID
 
 		data, err := json.Marshal(&todo)
@@ -317,10 +341,14 @@ func (s *server) initRoutes() {
 }
 
 func newServer(bind string) *server {
+	maxItems, maxTitleLength := getServerConfiguration()
+
 	server := &server{
-		bind:      bind,
-		router:    httprouter.New(),
-		templates: newTemplates("base"),
+		bind:           bind,
+		router:         httprouter.New(),
+		templates:      newTemplates("base"),
+		maxItems:       maxItems,
+		maxTitleLength: maxTitleLength,
 
 		// Logger
 		logger: logger.New(logger.Options{
@@ -345,4 +373,35 @@ func newServer(bind string) *server {
 	server.initRoutes()
 
 	return server
+}
+
+func getServerConfiguration() (int, int) {
+	envMaxItems := os.Getenv("MAX_ITEMS")
+	envMaxTitleLength := os.Getenv("MAX_TITLE_LENGTH")
+	var maxItems int
+	var maxTitleLength int
+
+	if envMaxItems == "" {
+		maxItems = DefaultMaxItems
+	} else {
+		var err error
+		maxItems, err = strconv.Atoi(envMaxItems)
+		if err != nil {
+			log.WithError(err).Error("error parsing MAX_ITEMS, using default value")
+			maxItems = DefaultMaxItems
+		}
+	}
+
+	if envMaxTitleLength == "" {
+		maxTitleLength = DefaultMaxTitleLength
+	} else {
+		var err error
+		maxTitleLength, err = strconv.Atoi(envMaxTitleLength)
+		if err != nil {
+			log.WithError(err).Error("error parsing MAX_TITLE_LENGTH, using default value")
+			maxTitleLength = DefaultMaxTitleLength
+		}
+	}
+
+	return maxItems, maxTitleLength
 }
