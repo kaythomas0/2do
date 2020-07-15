@@ -13,6 +13,11 @@ _Dracula Theme_
 <img src="mobile-dracula.png" alt="Mobile Dracula Theme" height="500"/>
 <img src="desktop-dracula.png" alt="Desktop Dracula Theme" height="500"/>
 
+See all themes in the "Preset Color Themes" section below
+
+## Demo
+Try out a public demo instance here: https://2do-demo.page
+
 ## Deployment
 
 ### Docker Compose (Recommended Method)
