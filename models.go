@@ -4,14 +4,7 @@ import (
 	"time"
 )
 
-const (
-	// maxTitleLength is the maximum valid length of a todo item's title.
-	// Todo items that exceed this length are stripped. This is to prevent
-	// abuse primarily.
-	maxTitleLength = 100
-)
-
-// Todo ...
+// Todo represents a single item on the todo list
 type Todo struct {
 	ID        uint64
 	Done      bool
@@ -21,10 +14,6 @@ type Todo struct {
 }
 
 func newTodo(title string) *Todo {
-	if len(title) > maxTitleLength {
-		title = title[:maxTitleLength]
-	}
-
 	return &Todo{
 		Title:     title,
 		CreatedAt: time.Now(),
@@ -42,7 +31,7 @@ func (t *Todo) toggleDone() {
 	t.UpdatedAt = time.Now()
 }
 
-// TodoList ...
+// TodoList represents a slice of todo items
 type TodoList []*Todo
 
 func (a TodoList) Len() int           { return len(a) }

@@ -4,14 +4,19 @@ Minimal self-hosted todo list forked from [prologic/todo](https://github.com/pro
 ## Screenshots
 _Nord Theme_
 
-<img src="mobile-nord.png" alt="Mobile Nord Theme" height="500"/>
-<img src="desktop-nord.png" alt="Desktop Nord Theme" height="500"/>
+<img src="screenshots/mobile-nord.png" alt="Mobile Nord Theme" height="500"/>
+<img src="screenshots/desktop-nord.png" alt="Desktop Nord Theme" height="500"/>
 <br />
 
 _Dracula Theme_
 
-<img src="mobile-dracula.png" alt="Mobile Dracula Theme" height="500"/>
-<img src="desktop-dracula.png" alt="Desktop Dracula Theme" height="500"/>
+<img src="screenshots/mobile-dracula.png" alt="Mobile Dracula Theme" height="500"/>
+<img src="screenshots/desktop-dracula.png" alt="Desktop Dracula Theme" height="500"/>
+
+See all themes in the "Preset Color Themes" section below
+
+## Demo
+Try out a public demo instance here: https://2do-demo.page
 
 ## Deployment
 
@@ -122,8 +127,14 @@ volumes:
   db:
 ```
 
+### Additional Configuration
+| Environment Variable           | Description                                      | Default Value |
+|--------------------------------|--------------------------------------------------|---------------|
+| MAX_ITEMS                      | Maximum number of items allowed in the todo list | 100           |
+| MAX_TITLE_LENGTH               | Maximum length of a todo list item               | 100           |
+
 ## Development
-You can run a local version of 2do from source using the Makefile:
+You can quickly run a local version of 2do from source using the Makefile:
 ```
 $ git clone https://gitlab.com/KevinNThomas/2do
 $ cd 2do
@@ -132,4 +143,5 @@ $ make
 
 ## License
 MIT
+
 Icon made by [Smashicons](https://smashicons.com/) from [flaticon.com](https://flaticon.com).
