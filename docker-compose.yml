@@ -2,15 +2,12 @@ version: '3'
 
 services:
   2do:
-    build: .
+    image: kevinnthomas/2do
     container_name: 2do
-    environment:
-      COLOR_THEME: ayu
     ports:
       - 8000:8000
     volumes:
       - db:/2do/db
-    restart: always
 
 volumes:
   db:
