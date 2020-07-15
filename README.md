@@ -4,14 +4,14 @@ Minimal self-hosted todo list forked from [prologic/todo](https://github.com/pro
 ## Screenshots
 _Nord Theme_
 
-<img src="mobile-nord.png" alt="Mobile Nord Theme" height="500"/>
-<img src="desktop-nord.png" alt="Desktop Nord Theme" height="500"/>
+<img src="screenshots/mobile-nord.png" alt="Mobile Nord Theme" height="500"/>
+<img src="screenshots/desktop-nord.png" alt="Desktop Nord Theme" height="500"/>
 <br />
 
 _Dracula Theme_
 
-<img src="mobile-dracula.png" alt="Mobile Dracula Theme" height="500"/>
-<img src="desktop-dracula.png" alt="Desktop Dracula Theme" height="500"/>
+<img src="screenshots/mobile-dracula.png" alt="Mobile Dracula Theme" height="500"/>
+<img src="screenshots/desktop-dracula.png" alt="Desktop Dracula Theme" height="500"/>
 
 See all themes in the "Preset Color Themes" section below
 
