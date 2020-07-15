@@ -324,7 +324,7 @@ func newServer(bind string) *server {
 
 		// Logger
 		logger: logger.New(logger.Options{
-			Prefix:               "todo",
+			Prefix:               "2do",
 			RemoteAddressHeaders: []string{"X-Forwarded-For"},
 		}),
 
