@@ -1,6 +1,18 @@
 # 2do
 Minimal self-hosted todo list forked from [prologic/todo](https://github.com/prologic/todo) aimed at being modern and mobile friendly.
 
+## Screenshots
+_Nord Theme_
+
+<img src="mobile-nord.png" alt="Mobile Nord Theme" height="500"/>
+<img src="desktop-nord.png" alt="Desktop Nord Theme" height="500"/>
+<br />
+
+_Dracula Theme_
+
+<img src="mobile-dracula.png" alt="Mobile Dracula Theme" height="500"/>
+<img src="desktop-dracula.png" alt="Desktop Dracula Theme" height="500"/>
+
 ## Deployment
 
 ### Docker Compose (Recommended Method)
@@ -64,6 +76,10 @@ services:
 volumes:
   db:
 ```
+
+#### Screenshots
+
+You can find screenshots and the CSS of all the preset color themes in both mobile and desktop views on the [Wiki Page](https://gitlab.com/KevinNThomas/2do/-/wikis/Color-Themes).
 
 ### Custom Color Themes
 You can set your own color theme by passing in the appropriate environment variables.
