@@ -68,7 +68,7 @@ volumes:
 ### Custom Color Themes
 You can set your own color theme by passing in the appropriate environment variables.
 
-Set the `COLOR_THEME` environment variable to `custom`, and the five following environment variables to the hex value (omitting the `#`) colors you want:
+Set the `COLOR_THEME` environment variable to `custom`, and the five following environment variables to the colors of your choice (in hex format, omitting the `#`):
 
 | Environment Variable           | Description                       |
 |--------------------------------|-----------------------------------|
