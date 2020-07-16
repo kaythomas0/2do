@@ -10,6 +10,8 @@ WORKDIR /2do
 
 COPY . /2do
 
+RUN mkdir db
+
 RUN go get -v -d
 
 RUN go build .

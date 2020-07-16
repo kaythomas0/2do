@@ -15,16 +15,16 @@ var (
 
 func main() {
 	var (
-		dbpath string
-		bind   string
+		// dbpath string
+		bind string
 	)
 
-	flag.StringVar(&dbpath, "dbpath", "todo.db", "Database path")
+	// flag.StringVar(&dbpath, "dbpath", "todo.db", "Database path")
 	flag.StringVar(&bind, "bind", "0.0.0.0:8000", "[int]:<port> to bind to")
 	flag.Parse()
 
 	var err error
-	db, err = bitcask.Open("/2do/db")
+	db, err = bitcask.Open("./db")
 	if err != nil {
 		log.Fatal(err)
 	}
