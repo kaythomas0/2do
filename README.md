@@ -133,13 +133,16 @@ volumes:
 | MAX_ITEMS                      | Maximum number of items allowed in the todo list | 100           |
 | MAX_TITLE_LENGTH               | Maximum length of a todo list item               | 100           |
 
-## Development
-You can quickly run a local version of 2do from source using the Makefile:
+## Development / Non-Dockerized Deploy
+You can quickly run a 2do instance from source using the Makefile:
 ```
 $ git clone https://gitlab.com/KevinNThomas/2do
 $ cd 2do
 $ make
 ```
+Then 2do will be running at: http://localhost:8000
+
+The database will be stored in the `./db` directory.
 
 ## License
 MIT
