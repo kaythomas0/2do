@@ -84,8 +84,8 @@ func (s *server) IndexHandler() httprouter.Handle {
 
 		var todoList TodoList
 
-		err := db.Fold(func(key string) error {
-			if key == "nextid" {
+		err := db.Fold(func(key []byte) error {
+			if string(key) == "nextid" {
 				return nil
 			}
 
@@ -93,7 +93,7 @@ func (s *server) IndexHandler() httprouter.Handle {
 
 			data, err := db.Get(key)
 			if err != nil {
-				log.WithError(err).WithField("key", key).Error("error getting todo")
+				log.WithError(err).WithField("key", string(key)).Error("error getting todo")
 				return err
 			}
 
@@ -125,7 +125,7 @@ func (s *server) AddHandler() httprouter.Handle {
 		s.counters.Inc("n_add")
 
 		var nextID uint64
-		rawNextID, err := db.Get("nextid")
+		rawNextID, err := db.Get([]byte("nextid"))
 		if err != nil {
 			if err != bitcask.ErrKeyNotFound {
 				log.WithError(err).Error("error getting nextid")
@@ -148,7 +148,7 @@ func (s *server) AddHandler() httprouter.Handle {
 
 		key := fmt.Sprintf("todo_%d", nextID)
 
-		err = db.Put(key, data)
+		err = db.Put([]byte(key), data)
 		if err != nil {
 			log.WithError(err).Error("error storing todo")
 			http.Error(w, "Internal Error", http.StatusInternalServerError)
@@ -158,7 +158,7 @@ func (s *server) AddHandler() httprouter.Handle {
 		buf := make([]byte, 8)
 		nextID++
 		binary.BigEndian.PutUint64(buf, nextID)
-		err = db.Put("nextid", buf)
+		err = db.Put([]byte("nextid"), buf)
 		if err != nil {
 			log.WithError(err).Error("error storing nextid")
 			http.Error(w, "Internal Error", http.StatusInternalServerError)
@@ -196,7 +196,7 @@ func (s *server) DoneHandler() httprouter.Handle {
 		var todo Todo
 
 		key := fmt.Sprintf("todo_%d", i)
-		data, err := db.Get(key)
+		data, err := db.Get([]byte(key))
 		if err != nil {
 			log.WithError(err).WithField("key", key).Error("error retriving todo")
 			http.Error(w, "Internal Error", http.StatusInternalServerError)
@@ -219,7 +219,7 @@ func (s *server) DoneHandler() httprouter.Handle {
 			return
 		}
 
-		err = db.Put(key, data)
+		err = db.Put([]byte(key), data)
 		if err != nil {
 			log.WithError(err).WithField("key", key).Error("error storing todo")
 			http.Error(w, "Internal Error", http.StatusInternalServerError)
@@ -255,7 +255,7 @@ func (s *server) ClearHandler() httprouter.Handle {
 		}
 
 		key := fmt.Sprintf("todo_%d", i)
-		err = db.Delete(key)
+		err = db.Delete([]byte(key))
 		if err != nil {
 			log.WithError(err).WithField("key", key).Error("error deleting todo")
 			http.Error(w, "Internal Error", http.StatusInternalServerError)
