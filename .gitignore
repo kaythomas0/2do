@@ -1,2 +1,3 @@
 *.db
 todo
+/static/css/color-theme.css
