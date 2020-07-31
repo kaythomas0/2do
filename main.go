@@ -60,6 +60,9 @@ func selectColorTheme() {
 			"\n\t--x: #" + xMarkColor + ";" +
 			"\n\t--label: #" + labelColor + ";" +
 			"\n}")
+		if err != nil {
+			log.Fatal(err)
+		}
 	} else {
 		if colorTheme == "" {
 			colorTheme = "dracula"
