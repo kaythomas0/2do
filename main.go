@@ -15,8 +15,8 @@ func main() {
 	var (
 		dbpath           string
 		bind             string
-		MAX_ITEMS        int
-		MAX_TITLE_LENGTH int
+		maxItems        int
+		maxTitleLength int
 	)
 
 	flag.StringVar(&dbpath, "dbpath", "todo.db", "Database path")
