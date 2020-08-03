@@ -32,5 +32,5 @@ func main() {
 	}
 	defer db.Close()
 
-	newServer(bind, MAX_ITEMS, MAX_TITLE_LENGTH).listenAndServe()
+	newServer(bind, maxItems, maxTitleLength).listenAndServe()
 }
