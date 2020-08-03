@@ -21,8 +21,8 @@ func main() {
 
 	flag.StringVar(&dbpath, "dbpath", "todo.db", "Database path")
 	flag.StringVar(&bind, "bind", "0.0.0.0:8000", "[int]:<port> to bind to")
-	flag.IntVar(&MAX_ITEMS, "MAX_ITEMS", 100, "maximum number of items allowed in the todo list")
-	flag.IntVar(&MAX_TITLE_LENGTH, "MAX_TITLE_LENGTH", 100, "maximum valid length of a todo item's title")
+	flag.IntVar(&maxItems, "max-items", 100, "maximum number of items allowed in the todo list")
+	flag.IntVar(&maxTitleLength, "max-title-length", 100, "maximum valid length of a todo item's title")
 	flag.Parse()
 
 	var err error
