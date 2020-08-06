@@ -48,9 +48,11 @@ func (c *counters) DecBy(name string, n int64) {
 }
 
 type server struct {
-	bind      string
-	templates *templates
-	router    *httprouter.Router
+	bind           string
+	templates      *templates
+	router         *httprouter.Router
+	maxItems       int
+	maxTitleLength int
 
 	// Logger
 	logger *logger.Logger
@@ -136,7 +138,18 @@ func (s *server) AddHandler() httprouter.Handle {
 			nextID = binary.BigEndian.Uint64(rawNextID)
 		}
 
-		todo := newTodo(r.FormValue("title"))
+		if db.Len() > s.maxItems {
+			log.Error("error adding item - max number of items reached")
+			http.Redirect(w, r, "/", http.StatusFound)
+			return
+		}
+
+		titleString := r.FormValue("title")
+		if len(titleString) > s.maxTitleLength {
+			titleString = titleString[:s.maxTitleLength]
+		}
+
+		todo := newTodo(titleString)
 		todo.ID = nextID
 
 		data, err := json.Marshal(&todo)
@@ -316,11 +329,13 @@ func (s *server) initRoutes() {
 	s.router.POST("/clear/:id", s.ClearHandler())
 }
 
-func newServer(bind string) *server {
+func newServer(bind string, maxItems int, maxTitleLength int) *server {
 	server := &server{
-		bind:      bind,
-		router:    httprouter.New(),
-		templates: newTemplates("base"),
+		bind:           bind,
+		router:         httprouter.New(),
+		templates:      newTemplates("base"),
+		maxItems:       maxItems,
+		maxTitleLength: maxTitleLength,
 
 		// Logger
 		logger: logger.New(logger.Options{

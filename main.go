@@ -17,6 +17,8 @@ func main() {
 	var (
 		dbpath               string
 		bind                 string
+		maxItems             int
+		maxTitleLength       int
 		colorTheme           string
 		colorPageBackground  string
 		colorInputBackground string
@@ -28,6 +30,8 @@ func main() {
 
 	flag.StringVar(&dbpath, "dbpath", "todo.db", "Database path")
 	flag.StringVar(&bind, "bind", "0.0.0.0:8000", "[int]:<port> to bind to")
+	flag.IntVar(&maxItems, "maxitems", 100, "maximum number of items allowed in the todo list")
+	flag.IntVar(&maxTitleLength, "maxtitlelength", 100, "maximum valid length of a todo item's title")
 	flag.Parse()
 
 	fs := flag.NewFlagSetWithEnvPrefix(os.Args[0], "COLOR", 0)
@@ -52,7 +56,7 @@ func main() {
 	selectColorTheme(colorTheme, colorPageBackground, colorInputBackground, colorForeground,
 		colorCheckMark, colorXMark, colorLabel)
 
-	newServer(bind).listenAndServe()
+	newServer(bind, maxItems, maxTitleLength).listenAndServe()
 }
 
 func selectColorTheme(colorTheme string, colorPageBackground string, colorInputBackground string,
