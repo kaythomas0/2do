@@ -38,9 +38,11 @@ func main() {
 	fs.StringVar(&colorCheckMark, "check", "50fa7b", "check mark color")
 	fs.StringVar(&colorXMark, "x", "ff5555", "x mark color")
 	fs.StringVar(&colorLabel, "label", "ff79c6", "label color")
-	fs.Parse(os.Args[1:])
+	err := fs.Parse(os.Args[1:])
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	var err error
 	db, err = bitcask.Open(dbpath)
 	if err != nil {
 		log.Fatal(err)
