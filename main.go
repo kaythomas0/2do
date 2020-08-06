@@ -15,13 +15,30 @@ var (
 
 func main() {
 	var (
-		dbpath string
-		bind   string
+		dbpath               string
+		bind                 string
+		colorTheme           string
+		colorPageBackground  string
+		colorInputBackground string
+		colorForeground      string
+		colorCheckMark       string
+		colorXMark           string
+		colorLabel           string
 	)
 
 	flag.StringVar(&dbpath, "dbpath", "todo.db", "Database path")
 	flag.StringVar(&bind, "bind", "0.0.0.0:8000", "[int]:<port> to bind to")
 	flag.Parse()
+
+	fs := flag.NewFlagSetWithEnvPrefix(os.Args[0], "COLOR", 0)
+	fs.StringVar(&colorTheme, "theme", "dracula", "color theme of the todo list, or 'custom'")
+	fs.StringVar(&colorPageBackground, "pagebackground", "282a36", "page background color")
+	fs.StringVar(&colorInputBackground, "inputbackground", "44475a", "input boxes color")
+	fs.StringVar(&colorForeground, "foreground", "f8f8f2", "text color")
+	fs.StringVar(&colorCheckMark, "check", "50fa7b", "check mark color")
+	fs.StringVar(&colorXMark, "x", "ff5555", "x mark color")
+	fs.StringVar(&colorLabel, "label", "ff79c6", "label color")
+	fs.Parse(os.Args[1:])
 
 	var err error
 	db, err = bitcask.Open(dbpath)
@@ -30,22 +47,15 @@ func main() {
 	}
 	defer db.Close()
 
-	selectColorTheme()
+	selectColorTheme(colorTheme, colorPageBackground, colorInputBackground, colorForeground,
+		colorCheckMark, colorXMark, colorLabel)
 
 	newServer(bind).listenAndServe()
 }
 
-func selectColorTheme() {
-	colorTheme := os.Getenv("COLOR_THEME")
-
+func selectColorTheme(colorTheme string, colorPageBackground string, colorInputBackground string,
+	colorForeground string, colorCheckMark string, colorXMark string, colorLabel string) {
 	if colorTheme == "custom" {
-		pageBackgroundColor := os.Getenv("COLOR_PAGE_BACKGROUND")
-		inputBackgroundColor := os.Getenv("COLOR_INPUT_BACKGROUND")
-		foregroundColor := os.Getenv("COLOR_FOREGROUND")
-		checkMarkColor := os.Getenv("COLOR_CHECK_MARK")
-		xMarkColor := os.Getenv("COLOR_X_MARK")
-		labelColor := os.Getenv("COLOR_LABEL")
-
 		customThemeFile, err := os.OpenFile("./static/css/color-theme.css", os.O_RDWR|os.O_CREATE, 0666)
 		if err != nil {
 			log.Fatal(err)
@@ -53,21 +63,17 @@ func selectColorTheme() {
 		defer customThemeFile.Close()
 
 		_, err = customThemeFile.WriteString(":root {" +
-			"\n\t--page-background: #" + pageBackgroundColor + ";" +
-			"\n\t--input-background: #" + inputBackgroundColor + ";" +
-			"\n\t--foreground: #" + foregroundColor + ";" +
-			"\n\t--check: #" + checkMarkColor + ";" +
-			"\n\t--x: #" + xMarkColor + ";" +
-			"\n\t--label: #" + labelColor + ";" +
+			"\n\t--page-background: #" + colorPageBackground + ";" +
+			"\n\t--input-background: #" + colorInputBackground + ";" +
+			"\n\t--foreground: #" + colorForeground + ";" +
+			"\n\t--check: #" + colorCheckMark + ";" +
+			"\n\t--x: #" + colorXMark + ";" +
+			"\n\t--label: #" + colorLabel + ";" +
 			"\n}")
 		if err != nil {
 			log.Fatal(err)
 		}
 	} else {
-		if colorTheme == "" {
-			colorTheme = "dracula"
-		}
-
 		from, err := os.Open("./static/color-themes/" + colorTheme + ".css")
 		if err != nil {
 			log.Fatal(err)
