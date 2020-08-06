@@ -8,12 +8,13 @@ RUN \
     apk add --update git && \
     rm -rf /var/cache/apk/*
 
-RUN mkdir -p /go/src/todo
-WORKDIR /go/src/todo
+RUN mkdir -p /usr/local/go/src/todo
+WORKDIR /usr/local/go/src/todo
 
-COPY . /go/src/todo
+COPY . /usr/local/go/src/todo
 
 RUN go get -v -d
 RUN go get github.com/GeertJohan/go.rice/rice
-RUN rice embed-go
 RUN go install -v
+RUN rice embed-go
+RUN go build .

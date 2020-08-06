@@ -48,9 +48,11 @@ func (c *counters) DecBy(name string, n int64) {
 }
 
 type server struct {
-	bind      string
-	templates *templates
-	router    *httprouter.Router
+	bind           string
+	templates      *templates
+	router         *httprouter.Router
+	maxItems       int
+	maxTitleLength int
 
 	// Logger
 	logger *logger.Logger
@@ -84,8 +86,8 @@ func (s *server) IndexHandler() httprouter.Handle {
 
 		var todoList TodoList
 
-		err := db.Fold(func(key string) error {
-			if key == "nextid" {
+		err := db.Fold(func(key []byte) error {
+			if string(key) == "nextid" {
 				return nil
 			}
 
@@ -93,7 +95,7 @@ func (s *server) IndexHandler() httprouter.Handle {
 
 			data, err := db.Get(key)
 			if err != nil {
-				log.WithError(err).WithField("key", key).Error("error getting todo")
+				log.WithError(err).WithField("key", string(key)).Error("error getting todo")
 				return err
 			}
 
@@ -125,7 +127,7 @@ func (s *server) AddHandler() httprouter.Handle {
 		s.counters.Inc("n_add")
 
 		var nextID uint64
-		rawNextID, err := db.Get("nextid")
+		rawNextID, err := db.Get([]byte("nextid"))
 		if err != nil {
 			if err != bitcask.ErrKeyNotFound {
 				log.WithError(err).Error("error getting nextid")
@@ -136,7 +138,18 @@ func (s *server) AddHandler() httprouter.Handle {
 			nextID = binary.BigEndian.Uint64(rawNextID)
 		}
 
-		todo := newTodo(r.FormValue("title"))
+		if db.Len() > s.maxItems {
+			log.Error("error adding item - max number of items reached")
+			http.Redirect(w, r, "/", http.StatusFound)
+			return
+		}
+
+		titleString := r.FormValue("title")
+		if len(titleString) > s.maxTitleLength {
+			titleString = titleString[:s.maxTitleLength]
+		}
+
+		todo := newTodo(titleString)
 		todo.ID = nextID
 
 		data, err := json.Marshal(&todo)
@@ -148,7 +161,7 @@ func (s *server) AddHandler() httprouter.Handle {
 
 		key := fmt.Sprintf("todo_%d", nextID)
 
-		err = db.Put(key, data)
+		err = db.Put([]byte(key), data)
 		if err != nil {
 			log.WithError(err).Error("error storing todo")
 			http.Error(w, "Internal Error", http.StatusInternalServerError)
@@ -158,7 +171,7 @@ func (s *server) AddHandler() httprouter.Handle {
 		buf := make([]byte, 8)
 		nextID++
 		binary.BigEndian.PutUint64(buf, nextID)
-		err = db.Put("nextid", buf)
+		err = db.Put([]byte("nextid"), buf)
 		if err != nil {
 			log.WithError(err).Error("error storing nextid")
 			http.Error(w, "Internal Error", http.StatusInternalServerError)
@@ -196,7 +209,7 @@ func (s *server) DoneHandler() httprouter.Handle {
 		var todo Todo
 
 		key := fmt.Sprintf("todo_%d", i)
-		data, err := db.Get(key)
+		data, err := db.Get([]byte(key))
 		if err != nil {
 			log.WithError(err).WithField("key", key).Error("error retriving todo")
 			http.Error(w, "Internal Error", http.StatusInternalServerError)
@@ -219,7 +232,7 @@ func (s *server) DoneHandler() httprouter.Handle {
 			return
 		}
 
-		err = db.Put(key, data)
+		err = db.Put([]byte(key), data)
 		if err != nil {
 			log.WithError(err).WithField("key", key).Error("error storing todo")
 			http.Error(w, "Internal Error", http.StatusInternalServerError)
@@ -255,7 +268,7 @@ func (s *server) ClearHandler() httprouter.Handle {
 		}
 
 		key := fmt.Sprintf("todo_%d", i)
-		err = db.Delete(key)
+		err = db.Delete([]byte(key))
 		if err != nil {
 			log.WithError(err).WithField("key", key).Error("error deleting todo")
 			http.Error(w, "Internal Error", http.StatusInternalServerError)
@@ -316,11 +329,13 @@ func (s *server) initRoutes() {
 	s.router.POST("/clear/:id", s.ClearHandler())
 }
 
-func newServer(bind string) *server {
+func newServer(bind string, maxItems int, maxTitleLength int) *server {
 	server := &server{
-		bind:      bind,
-		router:    httprouter.New(),
-		templates: newTemplates("base"),
+		bind:           bind,
+		router:         httprouter.New(),
+		templates:      newTemplates("base"),
+		maxItems:       maxItems,
+		maxTitleLength: maxTitleLength,
 
 		// Logger
 		logger: logger.New(logger.Options{
