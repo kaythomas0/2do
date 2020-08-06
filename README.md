@@ -99,11 +99,11 @@ Set the `COLOR_THEME` environment variable to `custom`, and the five following e
 
 | Environment Variable           | Description                       |
 |--------------------------------|-----------------------------------|
-| COLOR_PAGE_BACKGROUND          | Web page background               |
-| COLOR_INPUT_BACKGROUND         | Text boxes and buttons background |
+| COLOR_PAGEBACKGROUND           | Web page background               |
+| COLOR_INPUTBACKGROUND          | Text boxes and buttons background |
 | COLOR_FOREGROUND               | Input and item text               |
-| COLOR_CHECK_MARK               | Check mark on button              |
-| COLOR_X_MARK                   | X mark on button                  |
+| COLOR_CHECK                    | Check mark on button              |
+| COLOR_X                        | X mark on button                  |
 | COLOR_LABEL                    | Heading text and button hover     |
 
 An example configuration:
@@ -118,11 +118,11 @@ services:
     container_name: todo
     environment:
       COLOR_THEME: custom
-      COLOR_PAGE_BACKGROUND: 282a36
-      COLOR_INPUT_BACKGROUND: 44475a
+      COLOR_PAGEBACKGROUND: 282a36
+      COLOR_INPUTBACKGROUND: 44475a
       COLOR_FOREGROUND: f8f8f2
-      COLOR_CHECK_MARK: 50fa7b
-      COLOR_X_MARK: ff5555
+      COLOR_CHECK: 50fa7b
+      COLOR_X: ff5555
       COLOR_LABEL: ffffff
     restart: always
     ports:
@@ -137,8 +137,8 @@ volumes:
 ### Additional Configuration
 | Environment Variable           | Description                                      | Default Value |
 |--------------------------------|--------------------------------------------------|---------------|
-| MAX_ITEMS                      | Maximum number of items allowed in the todo list | 100           |
-| MAX_TITLE_LENGTH               | Maximum length of a todo list item               | 100           |
+| MAXITEMS                       | Maximum number of items allowed in the todo list | 100           |
+| MAXTITLELENGTH                 | Maximum length of a todo list item               | 100           |
 
 ## Development / Non-Dockerized Deploy
 You can quickly run a todo instance from source using the Makefile:
@@ -152,6 +152,14 @@ Then todo will be running at: http://localhost:8000
 By default todo stores todos in `todo.db` in the local directory.
 
 This can be configured with the `-dbpath /path/to/todo.db` option.
+
+All the environment variables that you set will be read upon running the Makefile.
+For example:
+```
+$ export COLOR_THEME=nord
+$ make
+```
+^ Will run the application with the nord color theme.
 
 ## License
 MIT
