@@ -92,6 +92,11 @@ volumes:
   todo_db:
 ```
 
+#### Screenshots
+
+You can find screenshots and the CSS of all the preset color themes in both mobile and desktop views on the [Wiki Page](https://github.com/prologic/todo/wiki/Color-Themes).
+
+
 ### Custom Color Themes
 You can set your own color theme by passing in the appropriate environment variables.
 
