@@ -70,7 +70,7 @@ todo comes with 12 different color themes based on some of the most popular prog
 ayu, dracula, gruvbox-dark, gruvbox-light, lucario, monokai, nord, solarized-dark, solarized-light, tomorrow, tomorrow-night, zenburn
 ```
 
-You can set the theme by passing the `COLOR_THEME` environment variable to the docker container, for example:
+You can set the theme by passing the `THEME` environment variable to the docker container, for example:
 
 `docker-compose.yml`
 ```
@@ -81,7 +81,7 @@ services:
     image: prologic/todo
     container_name: todo
     environment:
-      COLOR_THEME: ayu
+      THEME: ayu
     restart: always
     ports:
       - 8000:8000
@@ -100,16 +100,16 @@ You can find screenshots and the CSS of all the preset color themes in both mobi
 ### Custom Color Themes
 You can set your own color theme by passing in the appropriate environment variables.
 
-Set the `COLOR_THEME` environment variable to `custom`, and the five following environment variables to the colors of your choice (in hex format, omitting the `#`):
+Set the `THEME` environment variable to `custom`, and the six following environment variables to the colors of your choice (in hex format, omitting the `#`):
 
 | Environment Variable           | Description                       |
 |--------------------------------|-----------------------------------|
-| COLOR_PAGEBACKGROUND           | Web page background               |
-| COLOR_INPUTBACKGROUND          | Text boxes and buttons background |
-| COLOR_FOREGROUND               | Input and item text               |
-| COLOR_CHECK                    | Check mark on button              |
-| COLOR_X                        | X mark on button                  |
-| COLOR_LABEL                    | Heading text and button hover     |
+| PAGEBACKGROUND                 | Web page background               |
+| INPUTBACKGROUND                | Text boxes and buttons background |
+| FOREGROUND                     | Input and item text               |
+| CHECK                          | Check mark on button              |
+| X                              | X mark on button                  |
+| LABEL                          | Heading text and button hover     |
 
 An example configuration:
 
@@ -122,13 +122,13 @@ services:
     image: prologic/todo
     container_name: todo
     environment:
-      COLOR_THEME: custom
-      COLOR_PAGEBACKGROUND: 282a36
-      COLOR_INPUTBACKGROUND: 44475a
-      COLOR_FOREGROUND: f8f8f2
-      COLOR_CHECK: 50fa7b
-      COLOR_X: ff5555
-      COLOR_LABEL: ffffff
+      THEME: custom
+      PAGEBACKGROUND: 282a36
+      INPUTBACKGROUND: 44475a
+      FOREGROUND: f8f8f2
+      CHECK: 50fa7b
+      X: ff5555
+      LABEL: ffffff
     restart: always
     ports:
       - 8000:8000
@@ -156,15 +156,12 @@ Then todo will be running at: http://localhost:8000
 
 By default todo stores todos in `todo.db` in the local directory.
 
-This can be configured with the `-dbpath /path/to/todo.db` option.
+This can be configured with the `-dbpath=/path/to/todo.db` option.
 
-All the environment variables that you set will be read upon running the Makefile.
-For example:
+You can pass in the other environment variables using the flag notation as well, for example:
 ```
-$ export COLOR_THEME=nord
-$ make
+$ todo -maxitems=20 -maxtitlelength=50 -theme=nord
 ```
-^ Will run the application with the nord color theme.
 
 ## License
 MIT

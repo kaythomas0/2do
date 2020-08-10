@@ -28,13 +28,11 @@ func main() {
 		colorLabel           string
 	)
 
-	flag.StringVar(&dbpath, "dbpath", "todo.db", "Database path")
-	flag.StringVar(&bind, "bind", "0.0.0.0:8000", "[int]:<port> to bind to")
-	flag.IntVar(&maxItems, "maxitems", 100, "maximum number of items allowed in the todo list")
-	flag.IntVar(&maxTitleLength, "maxtitlelength", 100, "maximum valid length of a todo item's title")
-	flag.Parse()
-
-	fs := flag.NewFlagSetWithEnvPrefix(os.Args[0], "COLOR", 0)
+	fs := flag.NewFlagSet(os.Args[0], 0)
+	fs.StringVar(&dbpath, "dbpath", "todo.db", "Database path")
+	fs.StringVar(&bind, "bind", "0.0.0.0:8000", "[int]:<port> to bind to")
+	fs.IntVar(&maxItems, "maxitems", 100, "maximum number of items allowed in the todo list")
+	fs.IntVar(&maxTitleLength, "maxtitlelength", 100, "maximum valid length of a todo item's title")
 	fs.StringVar(&colorTheme, "theme", "dracula", "color theme of the todo list, or 'custom'")
 	fs.StringVar(&colorPageBackground, "pagebackground", "282a36", "page background color")
 	fs.StringVar(&colorInputBackground, "inputbackground", "44475a", "input boxes color")
