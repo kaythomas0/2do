@@ -15,5 +15,5 @@ require (
 	github.com/thoas/stats v0.0.0-20190407194641-965cb2de1678
 	github.com/unrolled/logger v0.0.0-20190327162521-be1a2406c7c9
 	golang.org/x/exp v0.0.0-20200513190911-00229845015e // indirect
-	golang.org/x/sys v0.0.0-20200720211630-cb9d2d5c5666 // indirect
+	golang.org/x/sys v0.1.0 // indirect
 )
